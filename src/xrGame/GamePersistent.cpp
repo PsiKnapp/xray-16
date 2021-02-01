@@ -304,6 +304,7 @@ LPCSTR GameTypeToString(EGameIDs gt, bool bShort)
     switch (gt)
     {
     case eGameIDSingle: return "single"; break;
+    case eGameIDCoop: return "coop"; break;
     case eGameIDDeathmatch: return (bShort) ? "dm" : "deathmatch"; break;
     case eGameIDTeamDeathmatch: return (bShort) ? "tdm" : "teamdeathmatch"; break;
     case eGameIDArtefactHunt: return (bShort) ? "ah" : "artefacthunt"; break;
@@ -905,8 +906,8 @@ void CGamePersistent::LoadTitle(bool change_tip, shared_str map_name)
         string512 buff;
         u8 tip_num;
         luabind::functor<u8> m_functor;
-        const bool is_single = !xr_strcmp(m_game_params.m_game_type, "single");
-        if (is_single)
+        const bool is_single_or_coop = !xr_strcmp(m_game_params.m_game_type, "single") || !xr_strcmp(m_game_params.m_game_type, "coop");
+        if (is_single_or_coop)
         {
             if (GEnv.ScriptEngine->functor("loadscreen.get_tip_number", m_functor))
                 tip_num = m_functor(map_name.c_str());
@@ -926,7 +927,7 @@ void CGamePersistent::LoadTitle(bool change_tip, shared_str map_name)
         xr_sprintf(buff, "%s%d:", StringTable().translate("ls_tip_number").c_str(), tip_num);
         shared_str tmp = buff;
 
-        if (is_single)
+        if (is_single_or_coop)
             xr_sprintf(buff, "ls_tip_%d", tip_num);
         else
             xr_sprintf(buff, "ls_mp_tip_%d", tip_num);

@@ -313,6 +313,8 @@ void CActor::g_cl_CheckControls(u32 mstate_wf, Fvector& vControlAccel, float& Ju
         } //(mstate_real&mcAnyMove)
     } // peOnGround || peAtWall
 
+    // PKTODO: Not sure what this does, seems like it might change camera effects based on direction changes
+    //  - Might not be relevant for coop, but could be cool if we can get it to work
     if (IsGameTypeSingle() && cam_eff_factor > EPS)
     {
         LPCSTR state_anm = NULL;

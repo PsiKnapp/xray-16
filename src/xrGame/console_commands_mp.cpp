@@ -163,6 +163,7 @@ public:
     CCC_Kill(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = true; };
     virtual void Execute(LPCSTR args)
     {
+        // PKTODO: Allow kill in coop?
         if (IsGameTypeSingle())
             return;
         if (!g_pGameLevel)
@@ -1559,6 +1560,9 @@ public:
     CCC_Vote_Start(LPCSTR N) : IConsole_Command(N) { bEmptyArgsHandled = false; };
     virtual void Execute(LPCSTR args)
     {
+        // PKTODO: Probably remove this command for coop
+        //  - Alternative, allow voting in choices that the host can make?
+        //  - Don't allow vote map change? Might make sense if we allow custom coop maps
         if (IsGameTypeSingle())
         {
             Msg("! Only for multiplayer games!");

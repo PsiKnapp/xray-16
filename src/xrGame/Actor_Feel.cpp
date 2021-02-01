@@ -121,10 +121,13 @@ void CActor::PickupModeUpdate()
 {
     if (!m_bPickupMode)
         return; // kUSE key pressed
+
+    // PKTODO: Allow pickup of objects in coop
     if (!IsGameTypeSingle())
         return;
 
     //подбирание объекта
+    // PKT: Object selection
     if (m_pObjectWeLookingAt && m_pObjectWeLookingAt->cast_inventory_item() &&
         m_pObjectWeLookingAt->cast_inventory_item()->Useful() && m_pUsableObject &&
         m_pUsableObject->nonscript_usable() && !Level().m_feel_deny.is_object_denied(m_pObjectWeLookingAt))
@@ -246,6 +249,7 @@ void CActor::Check_for_AutoPickUp()
     // mp only
     if (!psActorFlags.test(AF_AUTOPICKUP))
         return;
+    // PKTODO: Maybe disable autopickup for coop?
     if (IsGameTypeSingle())
         return;
     if (Level().CurrentControlEntity() != this)
@@ -334,6 +338,7 @@ void CActor::feel_sound_new(IGameObject* who, int /*type*/, const CSound_UserDat
 
 void CActor::Feel_Grenade_Update(float rad)
 {
+    // PKTODO: Figure out what this does, probably want for coop
     if (!IsGameTypeSingle())
     {
         return;

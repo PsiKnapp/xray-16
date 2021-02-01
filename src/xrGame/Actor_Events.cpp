@@ -45,6 +45,7 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
         }
 
         CGameObject* _GO = smart_cast<CGameObject*>(Obj);
+        // PK: Prevents dead players from picking up items in multiplayer
         if (!IsGameTypeSingle() && !g_Alive())
         {
             Msg("! WARNING: dead player [%d][%s] can't take items [%d][%s]", ID(), Name(), _GO->ID(),
@@ -68,6 +69,8 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
         }
         else
         {
+            // PKTODO: Investigate what OWNERSHIP_REJECT is for
+            //  - Probably don't need it.
             if (IsGameTypeSingle())
             {
                 NET_Packet P2;
@@ -163,6 +166,7 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
         P.r_u32(flags);
         s32 ZoomRndSeed = P.r_s32();
         s32 ShotRndSeed = P.r_s32();
+        // PK: Prevents opening inventory when dead in multiplayer
         if (!IsGameTypeSingle() && !g_Alive())
         {
             //				Msg("! WARNING: dead player tries to rize inventory action");
@@ -214,6 +218,7 @@ void CActor::OnEvent(NET_Packet& P, u16 type)
             break;
         }
 
+        // PK: Prevents artefact usage by dead players in multiplayer
         if (!IsGameTypeSingle() && !g_Alive())
         {
             Msg("! WARNING: dead player [%d][%s] can't use items [%d][%s]", ID(), Name(), Obj->ID(),

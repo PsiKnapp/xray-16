@@ -540,6 +540,7 @@ void CCustomZone::shedule_Update(u32 dt)
 
     UpdateOnOffState();
 
+    // PKTODO: Investigate what this does?
     if (!IsGameTypeSingle() && Local())
     {
         if (Device.dwTimeGlobal > m_ttl)

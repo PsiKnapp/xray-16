@@ -237,6 +237,7 @@ protected:
 
     bool m_bOutBorder;
     //сохраняет счетчик объектов в feel_touch, для которых необходимо обновлять размер колижена с актером
+    // PKT: keeps a counter of objects in feel_touch, for which it is necessary to update the size of the table(?)[PK: Weak translation? maybe array is better] with the actor
     u32 m_feel_touch_characters;
 
 private:
@@ -412,6 +413,8 @@ public:
     bool is_jump();
     u32 MovingState() const { return mstate_real; }
 protected:
+    // PK: Wishful is what the actor WANTS to do this update
+    //  - I think server can say no.
     u32 mstate_wishful;
     u32 mstate_old;
     u32 mstate_real;
@@ -447,7 +450,7 @@ public:
 public:
     virtual void g_WeaponBones(int& L, int& R1, int& R2);
     virtual void g_fireParams(const CHudItem* pHudItem, Fvector& P, Fvector& D);
-    virtual bool g_stateFire() { return !((mstate_wishful & mcLookout) && !IsGameTypeSingle()); }
+    virtual bool g_stateFire();
     virtual BOOL g_State(SEntityState& state) const;
     virtual float GetWeaponAccuracy() const;
     float GetFireDispertion() const { return m_fdisp_controller.GetCurrentDispertion(); }

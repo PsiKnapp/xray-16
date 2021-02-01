@@ -99,6 +99,7 @@ bool AnselManager::Init() const
             Device.seqFrame.Add(mutable_this, REG_PRIORITY_CAPTURE);
 
             CCameraBase* C = NULL;
+            // PK: Don't think this needs to be updated for coop
             if (IsGameTypeSingle() && Actor())
             {
                 if (!Actor()->Holder())

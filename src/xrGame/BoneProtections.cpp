@@ -78,6 +78,7 @@ void SBoneProtections::reload(const shared_str& bone_sect, IKinematics* kinemati
 
 void SBoneProtections::add(const shared_str& bone_sect, IKinematics* kinematics)
 {
+    // PKTODO: Figure out how this works and why it's disabled in a few places for multiplayer
     if (!IsGameTypeSingle())
         return;
 

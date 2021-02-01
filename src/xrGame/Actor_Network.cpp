@@ -60,6 +60,7 @@ CActor* g_actor = NULL;
 
 CActor* Actor()
 {
+    // PKTODO: Support coop?
     R_ASSERT2(GameID() == eGameIDSingle, "Actor() method invokation must be only in Single Player game!");
     VERIFY(g_actor);
     /*if (GameID() != eGameIDSingle)
@@ -714,7 +715,11 @@ bool CActor::net_Spawn(CSE_Abstract* DC)
     m_bWasHitted = false;
     m_dwILastUpdateTime = 0;
 
-    if (IsGameTypeSingle())
+    // PKTODO: Relevant for showing players on map
+    //  - Used in config map_spots.xml
+    //  - Will likely need to add spots for every player?
+    //  - Maybe just show for yourself and not other players? Might make sense...
+    if (IsGameTypeSingle() || IsGameTypeCoop())
     {
         Level().MapManager().AddMapLocation("actor_location", ID());
         Level().MapManager().AddMapLocation("actor_location_p", ID());

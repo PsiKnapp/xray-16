@@ -336,6 +336,7 @@ public:
         xr_strlwr(op_server);
         protect_Name_strlwr(op_client);
 
+        // PKTODO: Investigate for coop
         if (!op_client[0] && strstr(op_server, "single"))
             xr_strcpy(op_client, "localhost");
 

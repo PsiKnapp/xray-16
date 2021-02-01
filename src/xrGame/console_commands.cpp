@@ -516,6 +516,7 @@ public:
         if (!g_pGameLevel)
             return;
 
+        // PKTODO: Support spawn command in coop? Probably
         if (!IsGameTypeSingle())
         {
             Log("Spawn command is available only in singleplayer mode.");
@@ -600,6 +601,9 @@ public:
             return;
         }
 #endif
+        // PKTODO: Support saving in coop
+        //  - Only save for host
+        //  - Ideally save location of other players for reload and such
         if (!IsGameTypeSingle())
         {
             Msg("for single-mode only");

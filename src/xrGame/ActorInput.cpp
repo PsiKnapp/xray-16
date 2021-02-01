@@ -57,10 +57,12 @@ void CActor::IR_OnKeyboardPress(int cmd)
     {
     case kWPN_FIRE:
     {
+        // PKTODO: Prevents firing weapon when leaning in multiplayer
         if ((mstate_wishful & mcLookout) && !IsGameTypeSingle())
             return;
 
         u16 slot = inventory().GetActiveSlot();
+        // PK: Prevents firing weapon and sprinting with pistols and rifles/primaries
         if (inventory().ActiveItem() && (slot == INV_SLOT_3 || slot == INV_SLOT_2))
             mstate_wishful &= ~mcSprint;
         //-----------------------------
@@ -195,6 +197,8 @@ void CActor::IR_OnKeyboardPress(int cmd)
 
         if (itm)
         {
+            // PK: Decides where to pass this to server or not
+            // PKTODO: Figure out if there are eating differences between single and multiplayer
             if (IsGameTypeSingle())
                 inventory().Eat(itm);
             else
@@ -463,6 +467,9 @@ void CActor::ActorUse()
 
             VERIFY(pEntityAliveWeLookingAt);
 
+            // PKTODO: Enable talking with coop
+            //  - Need to figure out how to lock out an NPC for a conversation, or support multiple talking
+            //      - Multiple talking could lead to double turn ins and other issues...
             if (IsGameTypeSingle())
             {
                 if (pEntityAliveWeLookingAt->g_Alive())
@@ -472,6 +479,9 @@ void CActor::ActorUse()
                 else
                 {
                     //только если находимся в режиме single
+                    // PKT: only if we are in single mode
+                    // PKTODO: Need to allow dead body search
+                    //  - Similar comment to above, support only one looting at a time?
                     CUIGameSP* pGameSP = smart_cast<CUIGameSP*>(CurrentGameUI());
                     if (pGameSP)
                     {

@@ -171,6 +171,7 @@ float CActorCondition::GetZoneMaxPower(ALife::EHitType hit_type) const
 
 void CActorCondition::UpdateCondition()
 {
+    // PKTODO: Figure out what AF_GODMODE_RT is for
     if (psActorFlags.test(AF_GODMODE_RT))
     {
         UpdateSatiety();
@@ -178,6 +179,7 @@ void CActorCondition::UpdateCondition()
 
         m_fAlcohol += m_fV_Alcohol * m_fDeltaTime;
         clamp(m_fAlcohol, 0.0f, 1.0f);
+        // PKTODO: Allow camera effectors in multiplayer here
         if (IsGameTypeSingle())
         {
             CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
@@ -206,6 +208,7 @@ void CActorCondition::UpdateCondition()
         ConditionStand(cur_weight / base_weight);
     }
 
+    // PKTODO: Figure out what MaxPower is used for (movement speed?)
     if (IsGameTypeSingle())
     {
         float k_max_power = 1.0f;
@@ -224,6 +227,7 @@ void CActorCondition::UpdateCondition()
     m_fAlcohol += m_fV_Alcohol * m_fDeltaTime;
     clamp(m_fAlcohol, 0.0f, 1.0f);
 
+    // PKTODO: Support camera effectors and psy health
     if (IsGameTypeSingle())
     {
         CEffectorCam* ce = Actor()->Cameras().GetCamEffector((ECamEffectorType)effAlcohol);
@@ -273,9 +277,11 @@ void CActorCondition::UpdateCondition()
 
     inherited::UpdateCondition();
 
+    // PKTODO: Can we support tutorials in coop?
     if (IsGameTypeSingle())
         UpdateTutorialThresholds();
 
+    // PKTODO: Support effectors
     if (GetHealth() < 0.05f && m_death_effector == NULL && IsGameTypeSingle())
     {
         if (pSettings->section_exist("actor_death_effector"))
@@ -299,6 +305,7 @@ void CActorCondition::UpdateBoosters()
         BOOSTER_MAP::iterator it = m_booster_influences.find((EBoostParams)i);
         if (it != m_booster_influences.end())
         {
+            // PKTODO: Can we support slow time in coop?
             it->second.fBoostTime -= m_fDeltaTime / (IsGameTypeSingle() ? Level().GetGameTimeFactor() : 1.0f);
             if (it->second.fBoostTime <= 0.0f)
             {
@@ -417,6 +424,7 @@ float CActorCondition::GetZoneDanger() const
 void CActorCondition::UpdateRadiation() { inherited::UpdateRadiation(); }
 void CActorCondition::UpdateSatiety()
 {
+    // PKTODO: Figure out what to do with this
     if (!IsGameTypeSingle())
     {
         m_fDeltaPower += m_fV_SatietyPower * m_fDeltaTime;
@@ -484,6 +492,7 @@ bool CActorCondition::IsCantWalk() const
 
 bool CActorCondition::IsCantWalkWeight()
 {
+    // PKTODO: Support walk weight max for coop
     if (IsGameTypeSingle() && !GodMode())
     {
         float max_w = m_object->MaxWalkWeight();

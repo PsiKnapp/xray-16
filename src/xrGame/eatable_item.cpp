@@ -136,6 +136,7 @@ bool CEatableItem::UseBy(CEntityAlive* entity_alive)
         }
     }
 
+    // PK: This should work the same
     if (!IsGameTypeSingle() && OnServer())
     {
         NET_Packet tmp_packet;

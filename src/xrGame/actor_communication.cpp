@@ -239,6 +239,9 @@ void CActor::StartTalk(CInventoryOwner* talk_partner)
 
 void CActor::NewPdaContact(CInventoryOwner* pInvOwner)
 {
+    // PKTODO: Need to support new contact updates for coop
+    //  - Maybe tell everyone about the new contact, always?
+    //      - Prevents someone being close enough to get the contact, but not others
     if (!IsGameTypeSingle())
         return;
 

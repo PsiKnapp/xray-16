@@ -28,6 +28,7 @@ CCustomOutfit::CCustomOutfit()
 CCustomOutfit::~CCustomOutfit() { xr_delete(m_boneProtection); }
 bool CCustomOutfit::net_Spawn(CSE_Abstract* DC)
 {
+    // PKTODO: Sync this with the other identical code (ActorHelmet.cpp)
     if (IsGameTypeSingle())
         ReloadBonesProtection();
 
@@ -52,6 +53,7 @@ void CCustomOutfit::net_Import(NET_Packet& P)
 void CCustomOutfit::OnH_A_Chield()
 {
     inherited::OnH_A_Chield();
+    // PKTODO: Don't know how this should work
     if (!IsGameTypeSingle())
         ReloadBonesProtection();
 }
@@ -111,6 +113,7 @@ void CCustomOutfit::Load(LPCSTR section)
 void CCustomOutfit::ReloadBonesProtection()
 {
     IGameObject* parent = H_Parent();
+    // PKTODO: Figure out how this should work for coop
     if (IsGameTypeSingle())
         parent = smart_cast<IGameObject*>(Level().CurrentViewEntity());
 
@@ -150,6 +153,7 @@ float CCustomOutfit::HitThroughArmor(float hit_power, s16 element, float ap, boo
         if (/*!fis_zero(ba, EPS) && */ (ap > BoneArmor))
         {
             //пуля пробила бронь
+            // PKTODO: Sync with ActorHelmet.cpp
             if (!IsGameTypeSingle())
             {
                 float hit_fraction = (ap - BoneArmor) / ap;
@@ -342,6 +346,7 @@ bool CCustomOutfit::install_upgrade_impl(LPCSTR section, bool test)
 void CCustomOutfit::AddBonesProtection(LPCSTR bones_section)
 {
     IGameObject* parent = H_Parent();
+    // PKTODO: Sync with ActorHelmet.cpp
     if (IsGameTypeSingle())
         parent = smart_cast<IGameObject*>(Level().CurrentViewEntity());
 

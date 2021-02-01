@@ -182,7 +182,7 @@ void CLevelSpawnConstructor::load_objects()
         //			continue;
         //		}
 
-        if (!abstract->m_gameType.MatchType(eGameIDSingle))
+        if (!abstract->m_gameType.MatchType(eGameIDSingle) || !abstract->m_gameType.MatchType(eGameIDCoop))
         {
             F_entity_Destroy(abstract);
             continue;

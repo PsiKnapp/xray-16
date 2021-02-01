@@ -52,6 +52,8 @@ enum EMoveCommand
 
 // enum для определения действия над вещью на которую наведен в текущее время прицел.
 // Используется для показа всплывающих динамических подсказок
+// PKT: enum for defining the action on the thing that the scope is currently aiming at.
+// PKT: Used to show dynamic tooltips
 enum EActorAction
 {
     eaaNoAction = 0,

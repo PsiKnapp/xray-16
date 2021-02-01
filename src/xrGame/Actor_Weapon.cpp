@@ -75,6 +75,12 @@ void CActor::g_fireParams(const CHudItem* pHudItem, Fvector& fire_pos, Fvector& 
     }
 }
 
+bool CActor::g_stateFire() 
+{ 
+    // PKTODO: Prevents firing when leaning, can just allow in coop
+    return !((mstate_wishful & mcLookout) && !IsGameTypeSingle());
+}
+
 void CActor::g_WeaponBones(int& L, int& R1, int& R2)
 {
     R1 = m_r_hand;
@@ -124,6 +130,8 @@ void CActor::SelectBestWeapon(IGameObject* O)
 {
     if (!O)
         return;
+
+    // PKTODO: Maybe ignore in coop too?
     if (IsGameTypeSingle())
         return;
     // if (Level().CurrentControlEntity() != this) return;

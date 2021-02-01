@@ -295,7 +295,7 @@ void CActor::Load(LPCSTR section)
     CInventoryOwner::Load(section);
     m_location_manager->Load(section);
 
-    if (GameID() == eGameIDSingle)
+    if (GameID() == eGameIDSingle || GameID() == eGameIDCoop)
         OnDifficultyChanged();
     //////////////////////////////////////////////////////////////////////////
     ISpatial* self = smart_cast<ISpatial*>(this);
@@ -509,11 +509,13 @@ void CActor::Hit(SHit* pHDS)
             if (Device.dwFrame != last_hit_frame && HDS.bone() != BI_NONE)
             {
                 // вычислить позицию и направленность партикла
+                // PKT: calculate the position and direction of the particle
                 Fmatrix pos;
 
                 CParticlesPlayer::MakeXFORM(this, HDS.bone(), HDS.dir, HDS.p_in_bone_space, pos);
 
                 // установить particles
+                // PKT: Install particles
                 CParticlesObject* ps = NULL;
 
                 if (eacFirstEye == cam_active && this == Level().CurrentEntity())
@@ -586,6 +588,8 @@ void CActor::Hit(SHit* pHDS)
             HitMark(HDS.damage(), HDS.dir, HDS.who, HDS.bone(), HDS.p_in_bone_space, HDS.impulse, HDS.hit_type);
     }
 
+    // PKTODO: See if anything should be migrated for coop here
+    //  - Other thoughts: Teams in coop? FFA initially?
     if (IsGameTypeSingle())
     {
         if (GodMode())
@@ -765,6 +769,7 @@ void CActor::Die(IGameObject* who)
             {
                 if (item_in_slot)
                 {
+                    // PK: Don't need to change this probably?
                     if (IsGameTypeSingle())
                     {
                         CGrenade* grenade = smart_cast<CGrenade*>(item_in_slot);
@@ -796,10 +801,12 @@ void CActor::Die(IGameObject* who)
         };
 
         ///!!! чистка пояса
+        ///!!! PKT: belt cleaning
         TIItemContainer& l_blist = inventory().m_belt;
         while (!l_blist.empty())
             inventory().Ruck(l_blist.front());
 
+        // PKTODO: Need to support PDAs on players in multiplayer
         if (!IsGameTypeSingle())
         {
             // if we are on server and actor has PDA - destroy PDA
@@ -833,6 +840,9 @@ void CActor::Die(IGameObject* who)
         m_DangerSnd.stop();
     }
 
+    // PKTODO: decide what style of camera we want.
+    //  - Would be fun for other players to look at your body
+    //      - Don't want to end the game for everyone
     if (IsGameTypeSingle())
     {
         pcstr camera = READ_IF_EXISTS(pSettingsOpenXRay, r_string, "gameplay", "actor_death_camera", "freelook");
@@ -1044,6 +1054,7 @@ void CActor::UpdateCL()
             HUD().SetFirstBulletCrosshairDisp(pWeapon->GetFirstBulletDisp());
 #endif
 
+            // PKTODO: Leaning here disables crosshair for multiplayer
             BOOL B = !((mstate_real & mcLookout) && !IsGameTypeSingle());
 
             psHUD_Flags.set(HUD_WEAPON_RT, B);
@@ -1344,7 +1355,7 @@ void CActor::shedule_Update(u32 DT)
         m_pVehicleWeLookingAt = smart_cast<CHolderCustom*>(game_object);
         CEntityAlive* pEntityAlive = smart_cast<CEntityAlive*>(game_object);
 
-        if (GameID() == eGameIDSingle)
+        if (GameID() == eGameIDSingle || GameID() == eGameIDCoop)
         {
             if (m_pUsableObject && m_pUsableObject->tip_text())
             {
@@ -1456,6 +1467,7 @@ float CActor::missile_throw_force() { return 0.f; }
 void CActor::OnHUDDraw(CCustomHUD* hud, IRenderable* root)
 {
     R_ASSERT(IsFocused());
+    // PKTODO: Hides hud in multiplayer when leaning
     if (!((mstate_real & mcLookout) && !IsGameTypeSingle()))
         g_player_hud->render_hud(root);
 }
@@ -1592,6 +1604,8 @@ void CActor::ForceTransform(const Fmatrix& m)
 
     character_physics_support()->ForceTransform(m);
     const float block_damage_time_seconds = 2.f;
+    // PK: When actor is forced to move, multiplayer prevents damage for 2 seconds
+    //  - Value divided by fixed step to represent number of updates to skip
     if (!IsGameTypeSingle())
         character_physics_support()->movement()->BlockDamageSet(u64(block_damage_time_seconds / fixed_step));
 }
@@ -1618,7 +1632,8 @@ float CActor::Radius() const
 
 bool CActor::use_bolts() const
 {
-    if (!IsGameTypeSingle())
+    // PKTODO: Modifying to allow bults in coop and single
+    if (!IsGameTypeSingle() && !IsGameTypeCoop())
         return false;
     return CInventoryOwner::use_bolts();
 };
@@ -1627,6 +1642,7 @@ int g_iCorpseRemove = 1;
 
 bool CActor::NeedToDestroyObject() const
 {
+    // PKTODO: Look into this to keep bodies around longer when a player dies
     if (IsGameTypeSingle())
     {
         return false;

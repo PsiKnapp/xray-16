@@ -58,6 +58,7 @@ void CHelmet::Load(LPCSTR section)
 void CHelmet::ReloadBonesProtection()
 {
     IGameObject* parent = H_Parent();
+    // PKTODO: Figure out if this needs to be changed for coop
     if (IsGameTypeSingle())
         parent = smart_cast<IGameObject*>(Level().CurrentViewEntity());
 
@@ -67,6 +68,7 @@ void CHelmet::ReloadBonesProtection()
 
 bool CHelmet::net_Spawn(CSE_Abstract* DC)
 {
+    // PKTODO: Same as comment in ReloadBonesProtection (Do we need to enable for coop?)
     if (IsGameTypeSingle())
         ReloadBonesProtection();
 
@@ -202,6 +204,7 @@ bool CHelmet::install_upgrade_impl(LPCSTR section, bool test)
 void CHelmet::AddBonesProtection(LPCSTR bones_section)
 {
     IGameObject* parent = H_Parent();
+    // PKTODO: Same as ReloadBonesProtection (Do we need to modify for coop)
     if (IsGameTypeSingle())
         parent = smart_cast<IGameObject*>(Level().CurrentViewEntity());
 
@@ -222,6 +225,8 @@ float CHelmet::HitThroughArmor(float hit_power, s16 element, float ap, bool& add
         if (/*!fis_zero(ba, EPS) && */ (ap > BoneArmor))
         {
             //пуля пробила бронь
+            // PKT: the bullet piereced the armor
+            // PKTODO: Do we need to modify for coop? Probably not?
             if (!IsGameTypeSingle())
             {
                 float hit_fraction = (ap - BoneArmor) / ap;

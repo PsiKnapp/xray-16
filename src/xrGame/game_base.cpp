@@ -232,6 +232,8 @@ CLASS_ID game_GameState::getCLASS_ID(LPCSTR game_type_name, bool isServer)
     {
     case eGameIDSingle: return (isServer) ? TEXT2CLSID("SV_SINGL") : TEXT2CLSID("CL_SINGL"); break;
 
+    case eGameIDCoop: return (isServer) ? TEXT2CLSID("SV_COOP") : TEXT2CLSID("CL_COOP"); break;
+
     case eGameIDDeathmatch: return (isServer) ? TEXT2CLSID("SV_DM") : TEXT2CLSID("CL_DM"); break;
 
     case eGameIDTeamDeathmatch: return (isServer) ? TEXT2CLSID("SV_TDM") : TEXT2CLSID("CL_TDM"); break;

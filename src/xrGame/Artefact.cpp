@@ -123,6 +123,8 @@ void CArtefact::OnH_A_Chield()
     inherited::OnH_A_Chield();
 
     StopLights();
+    // PKTODO: Figure out what this function is for...
+    //  - Seems like on held? Can turn on and off artefact effects?
     if (IsGameTypeSingle())
     {
         SwitchAfParticles(false);
@@ -612,6 +614,7 @@ void CArtefact::OnActiveItem()
 
 void CArtefact::OnHiddenItem()
 {
+    // PKTODO: Figure out difference between hiding and hidden?
     if (IsGameTypeSingle())
         SwitchState(eHiding);
     else

@@ -1119,6 +1119,7 @@ void CCharacterPhysicsSupport::CreateShell(IGameObject* who, Fvector& dp, Fvecto
     m_eState = esDead;
     m_flags.set(fl_skeleton_in_shell, TRUE);
 
+    // PKTODO: Maybe allow better physics checks for coop?
     if (IsGameTypeSingle())
     {
         m_pPhysicsShell->SetPrefereExactIntegration(); // use exact integration for ragdolls in single

@@ -109,6 +109,7 @@ bool CLevel::net_start1()
         typedef IGame_Persistent::params params;
         params& p = g_pGamePersistent->m_game_params;
         // Connect
+        // PKTODO: Look into coop here
         if (!xr_strcmp(p.m_game_type, "single"))
         {
             Server = xr_new<xrServer>();
