@@ -68,6 +68,9 @@ protected:
 
     cdkey_ban_list m_cdkey_ban_list;
 
+    // PKTODO: Validate this works here
+    CALifeSimulator* m_alife_simulator;
+
 protected:
     virtual void SendPlayerKilledMessage(
         u16 KilledID, KILL_TYPE KillType, u16 KillerID, u16 WeaponID, SPECIAL_KILL_TYPE SpecialKill);
@@ -202,6 +205,18 @@ public:
     void BanPlayerDirectly(char const* client_hex_digest, s32 ban_time_sec, xrClientData* initiator);
     void UnBanPlayer(size_t banned_player_index);
     void PrintBanList(char const* filter);
+
+    IC xrServer& server() const
+    {
+        VERIFY(m_server);
+        return (*m_server);
+    }
+
+    IC CALifeSimulator& alife() const
+    {
+        VERIFY(m_alife_simulator);
+        return (*m_alife_simulator);
+    }
 
 protected:
     virtual void WriteGameState(CInifile& ini, LPCSTR sect, bool bRoundResult);

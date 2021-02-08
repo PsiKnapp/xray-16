@@ -329,7 +329,7 @@ void game_sv_Single::restart_simulator(LPCSTR saved_game_name)
     server().clear_ids();
 
     xr_strcpy(g_pGamePersistent->m_game_params.m_game_or_spawn, saved_game_name);
-    xr_strcpy(g_pGamePersistent->m_game_params.m_new_or_load, "load");
+    xr_strcpy(g_pGamePersistent->m_game_params.m_new_or_load_or_mp, "load");
 
     pApp->LoadBegin();
     m_alife_simulator = xr_new<CALifeSimulator>(&server(), &options);

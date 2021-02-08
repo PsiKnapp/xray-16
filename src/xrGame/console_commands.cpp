@@ -517,11 +517,12 @@ public:
             return;
 
         // PKTODO: Support spawn command in coop? Probably
-        if (!IsGameTypeSingle())
-        {
-            Log("Spawn command is available only in singleplayer mode.");
-            return;
-        }
+        // PKTODO: Revisit as we are attempting to support AI in coop
+        //if (!IsGameTypeSingle())
+        //{
+        //    Log("Spawn command is available only in singleplayer mode.");
+        //    return;
+        //}
 
         if (!pSettings->section_exist(args))
         {

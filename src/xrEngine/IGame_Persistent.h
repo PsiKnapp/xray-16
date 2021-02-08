@@ -52,7 +52,7 @@ public:
             string256 m_game_or_spawn;
             string256 m_game_type;
             string256 m_alife;
-            string256 m_new_or_load;
+            string256 m_new_or_load_or_mp; // PKTODO: Update this to support 'multi' for multiplayer?
             EGameIDs m_e_game_type;
         };
         string256 m_params[4];

@@ -592,7 +592,7 @@ void CGamePersistent::start_game_intro()
 
     if (g_pGameLevel && g_pGameLevel->bReady && Device.dwPrecacheFrame <= 2)
     {
-        if (0 == xr_stricmp(m_game_params.m_new_or_load, "new"))
+        if (0 == xr_stricmp(m_game_params.m_new_or_load_or_mp, "new"))
         {
             VERIFY(NULL == m_intro);
             Log("intro_start intro_game");

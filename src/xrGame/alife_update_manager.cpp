@@ -236,6 +236,7 @@ void CALifeUpdateManager::new_game(LPCSTR save_name)
     for (; I != E; ++I)
         (*I).second->on_register();
 
+    // PKTODO: don't want to save for multiplayer matches that aren't coop
 #ifdef DEBUG
     save(save_name);
 #endif // #ifdef DEBUG
@@ -253,6 +254,7 @@ void CALifeUpdateManager::load(LPCSTR game_name, bool no_assert, bool new_only)
     u32 memory_usage = Memory.mem_usage();
 #endif
 
+    // PKTODO: Disable this for multiplayer games
     xr_strcpy(g_last_saved_game, game_name);
 
     if (new_only || !CALifeStorageManager::load(game_name))

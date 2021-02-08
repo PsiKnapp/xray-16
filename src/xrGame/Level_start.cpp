@@ -117,10 +117,8 @@ bool CLevel::net_start1()
         else
         {
             Server = xr_new<xrGameSpyServer>();
-        }
 
-        if (xr_strcmp(p.m_alife, "alife"))
-        {
+            // PKTODO: This used to technically be available for single without alife support. Double check if that's necessary to support
             shared_str l_ver = game_sv_GameState::parse_level_version(m_caServerOptions);
 
             map_data.m_name = game_sv_GameState::parse_level_name(m_caServerOptions);

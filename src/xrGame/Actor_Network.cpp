@@ -61,7 +61,8 @@ CActor* g_actor = NULL;
 CActor* Actor()
 {
     // PKTODO: Support coop?
-    R_ASSERT2(GameID() == eGameIDSingle, "Actor() method invokation must be only in Single Player game!");
+    // PKTODO: Support multiplayer, may need to update all callsites to handle this correctly.
+    //R_ASSERT2(GameID() == eGameIDSingle, "Actor() method invokation must be only in Single Player game!");
     VERIFY(g_actor);
     /*if (GameID() != eGameIDSingle)
         VERIFY	(g_actor == Level().CurrentControlEntity());*/

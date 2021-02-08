@@ -42,23 +42,38 @@ CALifeSimulator::CALifeSimulator(IPureServer* server, shared_str* command_line)
     params& p = g_pGamePersistent->m_game_params;
 
     // PKTODO: investigate for coop
-    R_ASSERT2(xr_strlen(p.m_game_or_spawn) && !xr_strcmp(p.m_alife, "alife") && !xr_strcmp(p.m_game_type, "single"),
+    // PKTODO: allowing alife for multiplayer
+    R_ASSERT2(xr_strlen(p.m_game_or_spawn) && !xr_strcmp(p.m_alife, "alife"),
         "Invalid server options!");
 
-    string256 temp;
-    xr_strcpy(temp, p.m_game_or_spawn);
-    xr_strcat(temp, "/");
-    xr_strcat(temp, p.m_game_type);
-    xr_strcat(temp, "/");
-    xr_strcat(temp, p.m_alife);
-    *command_line = temp;
+    bool is_mp = !xr_strcmp(p.m_new_or_load_or_mp, "mp");
+
+    // Only update command line if single player (maybe coop)
+    // PKTODO: Figure out what this is for... I think it just cuts off "new" or "load" options...
+    if (!is_mp)
+    {
+        string256 temp;
+        xr_strcpy(temp, p.m_game_or_spawn);
+        xr_strcat(temp, "/");
+        xr_strcat(temp, p.m_game_type);
+        xr_strcat(temp, "/");
+        xr_strcat(temp, p.m_alife);
+        *command_line = temp;
+    }
 
     LPCSTR start_game_callback = pSettings->r_string(alife_section, "start_game_callback");
     luabind::functor<void> functor;
     R_ASSERT2(GEnv.ScriptEngine->functor(start_game_callback, functor), "failed to get start game callback");
     functor();
 
-    load(p.m_game_or_spawn, !xr_strcmp(p.m_new_or_load, "load") ? false : true, !xr_strcmp(p.m_new_or_load, "new"));
+    // PKTODO: Update this for multiplayer so that we don't require a load
+    LPCSTR game_name = p.m_game_or_spawn;
+    // Hacking in all.spawn load here
+    // PKTODO: PKFUTURE: support level spawn loads if they exist?
+    if (is_mp)
+        game_name = "all";
+
+    load(game_name, !xr_strcmp(p.m_new_or_load_or_mp, "load") ? false : true, !xr_strcmp(p.m_new_or_load_or_mp, "new") || is_mp);
 }
 
 CALifeSimulator::~CALifeSimulator()

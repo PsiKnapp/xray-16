@@ -68,7 +68,8 @@ CRelationRegistryWrapper& RELATION_REGISTRY::relation_registry()
 {
     if (!m_relation_registry)
     {
-        VERIFY(IsGameTypeSingle());
+        // PKTODO: Validate that removing this doesn't break things...
+        //VERIFY(IsGameTypeSingle());
 
         m_relation_registry = xr_new<CRelationRegistryWrapper>();
         load_attack_goodwill();

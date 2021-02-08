@@ -61,9 +61,15 @@ game_sv_mp::game_sv_mp()
     round_end_reason = eRoundEnd_Force; // unknown
     m_async_stats_request_time = 0;
     round_statistics_dump_fn[0] = 0;
+    m_alife_simulator = NULL;
 }
 
-game_sv_mp::~game_sv_mp() { xr_delete(m_strWeaponsData); }
+game_sv_mp::~game_sv_mp()
+{
+    xr_delete(m_strWeaponsData);
+    delete_data(m_alife_simulator);
+}
+
 void game_sv_mp::Update()
 {
     inherited::Update();
@@ -484,6 +490,10 @@ void game_sv_mp::Create(shared_str& options)
     {
         g_sv_mp_save_proxy_screenshots = TRUE;
     }
+
+    // PKTODO: Validate this is a good spot to put ai start
+    if (strstr(*options, "/alife"))
+        m_alife_simulator = xr_new<CALifeSimulator>(&server(), &options);
 };
 
 u8 game_sv_mp::SpectatorModes_Pack()

@@ -50,6 +50,7 @@ public:
     virtual void sls_default();
     virtual shared_str level_name(const shared_str& server_options) const;
     virtual void on_death(CSE_Abstract* e_dest, CSE_Abstract* e_src);
+    // PKTODO: See if we need restart_simulator in multiplayer games
     void restart_simulator(LPCSTR saved_game_name);
 
     IC xrServer& server() const
