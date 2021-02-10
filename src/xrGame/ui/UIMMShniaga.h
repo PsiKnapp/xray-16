@@ -35,11 +35,12 @@ public:
     virtual void SendMessage(CUIWindow* pWnd, s16 msg, void* pData = 0);
     void SetVisibleMagnifier(bool f);
     virtual void OnDeviceReset();
-    enum enum_page_id
+    enum enum_page_id // dkTODO: add new coop enum id
     {
         epi_main = 0x00,
         epi_new_game,
         epi_new_network_game,
+        epi_new_coop_game,
         epi_none
     }; // enum	enum_page_id
     void SetPage(enum_page_id page_id, LPCSTR xml_file, LPCSTR xml_path);
@@ -59,7 +60,8 @@ protected:
     void CreateList(xr_vector<CUITextWnd*>& lst, CUIXml& xml_doc, LPCSTR path, bool required = true);
     void ShowMain();
     void ShowNewGame();
-    void ShowNetworkGame();
+    void ShowNetworkGame(); // dkTODO: Add new ShowNewCoopGame() function
+    void ShowNewCoopGame();
     float pos(float x1, float x2, u32 t);
 
     CUIStatic* m_shniaga;
@@ -77,7 +79,8 @@ protected:
 
     xr_vector<CUITextWnd*> m_buttons;
     xr_vector<CUITextWnd*> m_buttons_new;
-    xr_vector<CUITextWnd*> m_buttons_new_network;
+    xr_vector<CUITextWnd*> m_buttons_new_network; // dkTODO: add new m_buttons_new_coop buttons
+    xr_vector<CUITextWnd*> m_buttons_new_coop;
 
     int m_selected_btn;
     enum_page_id m_page;

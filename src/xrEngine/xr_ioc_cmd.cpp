@@ -333,6 +333,8 @@ public:
         parse(op_client, args, "client"); // 2. client
         parse(op_demo, args, "demo"); // 3. demo
 
+        // dkTODO: may need some code here to handle coop client or coop server
+
         xr_strlwr(op_server);
         protect_Name_strlwr(op_client);
 

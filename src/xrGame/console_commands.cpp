@@ -182,6 +182,7 @@ public:
 };
 
 // console commands
+// dkTODO: Change from only single player game difficulty
 class CCC_GameDifficulty : public CCC_Token
 {
 public:

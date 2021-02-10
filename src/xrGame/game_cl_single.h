@@ -22,6 +22,7 @@ public:
     void OnDifficultyChanged();
 };
 
+// dkTODO: add coop difficulties or add new enum
 // game difficulty
 enum ESingleGameDifficulty
 {

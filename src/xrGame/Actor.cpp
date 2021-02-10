@@ -1929,6 +1929,9 @@ bool CActor::can_attach(const CInventoryItem* inventory_item) const
     return true;
 }
 
+// dkTODO: will need to change verify for coop
+// dkNOTE: Interesting that some settings are based on the name in the difficulty_type_token array for
+//         imminities, hit probability, and death parameters
 void CActor::OnDifficultyChanged()
 {
     // immunities

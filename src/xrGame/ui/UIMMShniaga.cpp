@@ -69,6 +69,7 @@ CUIMMShniaga::CUIMMShniaga()
     m_page = epi_none;
 }
 
+// dkTODO: delete_data for m_buttons_new_coop
 CUIMMShniaga::~CUIMMShniaga()
 {
     xr_delete(m_magnifier);
@@ -79,8 +80,10 @@ CUIMMShniaga::~CUIMMShniaga()
     delete_data(m_buttons);
     delete_data(m_buttons_new);
     delete_data(m_buttons_new_network);
+    delete_data(m_buttons_new_coop);
 }
 
+// dkTODO: add code for coop menu
 void CUIMMShniaga::InitShniaga(CUIXml& xml_doc, LPCSTR path)
 {
     string256 _path;
@@ -117,9 +120,11 @@ void CUIMMShniaga::InitShniaga(CUIXml& xml_doc, LPCSTR path)
             CreateList(m_buttons, xml_doc, "menu_main_last_save");
 
         CreateList(m_buttons_new, xml_doc, "menu_new_game");
+        CreateList(m_buttons_new_coop, xml_doc, "menu_new_game_coop");
     }
     else
     {
+        // dkTODO: we'll eventually need a Coop game ID
         if (GameID() == eGameIDSingle)
         {
             VERIFY(Actor());
@@ -192,6 +197,7 @@ void CUIMMShniaga::CreateList(xr_vector<CUITextWnd*>& lst, CUIXml& xml_doc, LPCS
     xml_doc.SetLocalRoot(xml_doc.GetRoot());
 }
 
+// dkTODO: add coop
 void CUIMMShniaga::SetPage(enum_page_id page_id, LPCSTR xml_file, LPCSTR xml_path)
 {
     VERIFY(m_page != page_id);
@@ -207,6 +213,10 @@ void CUIMMShniaga::SetPage(enum_page_id page_id, LPCSTR xml_file, LPCSTR xml_pat
     case epi_new_network_game: { lst = &m_buttons_new_network;
     }
     break;
+    case epi_new_coop_game: {
+        lst = &m_buttons_new_coop;
+    }
+    break;
     }; // switch (page_id)
     delete_data(*lst);
 
@@ -215,6 +225,7 @@ void CUIMMShniaga::SetPage(enum_page_id page_id, LPCSTR xml_file, LPCSTR xml_pat
     CreateList(*lst, tmp_xml, xml_path);
 }
 
+// dkTODO: add coop
 void CUIMMShniaga::ShowPage(enum_page_id page_id)
 {
     switch (page_id)
@@ -228,9 +239,13 @@ void CUIMMShniaga::ShowPage(enum_page_id page_id)
     case epi_new_network_game: { ShowNetworkGame();
     }
     break;
+    case epi_new_coop_game: { ShowNewCoopGame();
+    }
+    break;
     }; // switch (page_id)
 }
 
+// dkTODO: add new ShowCoopNewGame() function
 void CUIMMShniaga::ShowMain()
 {
     m_page = epi_main;
@@ -263,6 +278,17 @@ void CUIMMShniaga::ShowNetworkGame()
     SelectBtn(m_buttons_new_network[0]);
 }
 
+void CUIMMShniaga::ShowNewCoopGame()
+{
+    m_page = epi_new_coop_game;
+    m_view->Clear();
+    for (u32 i = 0; i < m_buttons_new_coop.size(); i++)
+        m_view->AddWindow(m_buttons_new_coop[i], false);
+
+    SelectBtn(m_buttons_new_coop[0]);
+}
+
+// dkTODO: add option for m_buttons_new_coop
 bool CUIMMShniaga::IsButton(CUIWindow* st)
 {
     for (u32 i = 0; i < m_buttons.size(); ++i)
@@ -275,6 +301,10 @@ bool CUIMMShniaga::IsButton(CUIWindow* st)
 
     for (u32 i = 0, count = m_buttons_new_network.size(); i < count; ++i)
         if (m_buttons_new_network[i] == st)
+            return true;
+
+    for (u32 i = 0; i < m_buttons_new_coop.size(); ++i)
+        if (m_buttons_new_coop[i] == st)
             return true;
 
     return false;
@@ -292,6 +322,7 @@ void CUIMMShniaga::SendMessage(CUIWindow* pWnd, s16 msg, void* pData)
     }
 }
 
+// dkTODO: add option for coop
 void CUIMMShniaga::SelectBtn(int btn)
 {
     m_view->Update();
@@ -303,17 +334,20 @@ void CUIMMShniaga::SelectBtn(int btn)
         m_selected = m_buttons_new[btn];
     else if (epi_new_network_game == m_page)
         m_selected = m_buttons_new_network[btn];
+    else if (epi_new_coop_game == m_page)
+        m_selected = m_buttons_new_coop[btn];
 
     m_selected_btn = btn;
     ProcessEvent(E_Begin);
 }
 
+// dkTODO: add option for coop, and also change to use enumeration rather than number
 void CUIMMShniaga::SelectBtn(CUIWindow* btn)
 {
     R_ASSERT(m_page >= 0);
     for (int i = 0; i < (int)m_buttons.size(); ++i)
     {
-        if (0 == m_page)
+        if (epi_main == m_page)
         {
             if (m_buttons[i] == btn)
             {
@@ -321,7 +355,7 @@ void CUIMMShniaga::SelectBtn(CUIWindow* btn)
                 return;
             }
         }
-        else if (1 == m_page)
+        else if (epi_new_game == m_page)
         {
             if (m_buttons_new[i] == btn)
             {
@@ -329,9 +363,17 @@ void CUIMMShniaga::SelectBtn(CUIWindow* btn)
                 return;
             }
         }
-        else if (2 == m_page)
+        else if (epi_new_network_game == m_page)
         {
             if (m_buttons_new_network[i] == btn)
+            {
+                SelectBtn(i);
+                return;
+            }
+        }
+        else if (epi_new_coop_game == m_page)
+        {
+            if (m_buttons_new_coop[i] == btn)
             {
                 SelectBtn(i);
                 return;
@@ -384,12 +426,15 @@ bool CUIMMShniaga::OnMouseAction(float x, float y, EUIMessages mouse_action)
     return CUIWindow::OnMouseAction(x, y, mouse_action);
 }
 
+// dkTODO: add option for coop
 void CUIMMShniaga::OnBtnClick()
 {
     if (0 == xr_strcmp("btn_new_game", m_selected->WindowName()))
         ShowNewGame();
     else if (0 == xr_strcmp("btn_new_back", m_selected->WindowName()))
         ShowMain();
+    else if (0 == xr_strcmp("btn_new_coop_game", m_selected->WindowName()))
+        ShowNewCoopGame();
     else
         GetMessageTarget()->SendMessage(m_selected, BUTTON_CLICKED);
 }
@@ -419,15 +464,18 @@ bool CUIMMShniaga::OnKeyboardAction(int dik, EUIMessages keyboard_action)
     return CUIWindow::OnKeyboardAction(dik, keyboard_action);
 }
 
+// dkTODO: add coop option, and change to using page enumeration
 int CUIMMShniaga::BtnCount()
 {
     R_ASSERT(-1);
-    if (m_page == 0)
+    if (m_page == epi_main)
         return (int)m_buttons.size();
-    else if (m_page == 1)
+    else if (m_page == epi_new_game)
         return (int)m_buttons_new.size();
-    else if (m_page == 2)
+    else if (m_page == epi_new_network_game)
         return (int)m_buttons_new_network.size();
+    else if (m_page == epi_new_coop_game)
+        return (int)m_buttons_new_coop.size();
     else
         return -1;
 }
