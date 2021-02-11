@@ -205,7 +205,8 @@ bool CEntity::net_Spawn(CSE_Abstract* DC)
         }
     }
 
-    if (g_Alive() && IsGameTypeSingle())
+    // PKTODO: Validate change here is safe
+    if (g_Alive()) //&& IsGameTypeSingle())
     {
         m_registered_member = true;
         Level().seniority_holder().team(g_Team()).squad(g_Squad()).group(g_Group()).register_member(this);
@@ -254,6 +255,7 @@ void CEntity::net_Destroy()
 
 void CEntity::KillEntity(u16 whoID, bool bypass_actor_check)
 {
+    // PKTODO: Do we want to force actor out of mounted weapons and such? Probably...
     if (GameID() == eGameIDSingle && this->ID() == Actor()->ID())
     {
     //AVO: allow scripts to process actor condition and prevent actor's death or kill him if desired.

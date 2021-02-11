@@ -165,6 +165,10 @@ public:
     virtual void ClearPlayerItems(game_PlayerState* ps);
     virtual void SetPlayersDefItems(game_PlayerState* ps);
 
+    virtual BOOL OnPreCreate(CSE_Abstract* E);
+    virtual void OnCreate(u16 eid_who);
+    virtual void OnPostCreate(u16 id_who);
+
     virtual void ReadOptions(shared_str& options);
     virtual void ConsoleCommands_Create();
     virtual void ConsoleCommands_Clear();

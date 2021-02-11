@@ -68,9 +68,16 @@ CALifeSimulator::CALifeSimulator(IPureServer* server, shared_str* command_line)
 
     // PKTODO: Update this for multiplayer so that we don't require a load
     LPCSTR game_name = p.m_game_or_spawn;
-    // Hacking in all.spawn load here
-    // PKTODO: PKFUTURE: support level spawn loads if they exist?
-    if (is_mp)
+
+    // PKTODO: Optional hacking in all.spawn load here
+    //if (is_mp)
+    //    game_name = "all";
+
+    // Checking for map spawn file
+    //  - If it doesn't exist, we default to all
+    //  - PKTODO: May not be safest strategy
+    string_path file_name;
+    if (!FS.exist(file_name, "$game_spawn$", game_name, ".spawn"))
         game_name = "all";
 
     load(game_name, !xr_strcmp(p.m_new_or_load_or_mp, "load") ? false : true, !xr_strcmp(p.m_new_or_load_or_mp, "new") || is_mp);

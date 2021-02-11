@@ -19,6 +19,8 @@
 #include "WeaponKnife.h"
 #include "game_cl_base_weapon_usage_statistic.h"
 #include "xrGameSpyServer.h"
+#include "ai_space.h"
+#include "alife_object_registry.h"
 #include "xrNetServer/NET_Messages.h"
 #include "xrCore/xr_token.h"
 
@@ -626,6 +628,8 @@ void game_sv_mp::SpawnPlayer(ClientID id, LPCSTR N)
     };
 
     Msg("* %s [%d] respawned as %s", get_name_id(id), E->ID, (0 == pA) ? "spectator" : "actor");
+    // PKTODO: This is strange, it's like we're spawning twice but I don't know why?
+    //  - Appears to spawn at spawn_begin too
     spawn_end(E, id);
 
     ps_who->SetGameID(CL->owner->ID);
@@ -1418,6 +1422,60 @@ void game_sv_mp::SetPlayersDefItems(game_PlayerState* ps)
         ps->pItemList.push_back(AmmoID);
         //}
     };
+};
+
+BOOL game_sv_mp::OnPreCreate(CSE_Abstract* E) 
+{ 
+    return inherited::OnPreCreate(E);
+};
+
+void game_sv_mp::OnCreate(u16 eid_who)
+{
+    inherited::OnCreate(eid_who);
+
+    // PKTODO: Copied from game_sv_single
+    //  - Investigate if this should be in the base class
+    if (!ai().get_alife())
+        return;
+
+    CSE_Abstract* e_who = get_entity_from_eid(eid_who);
+    VERIFY(e_who);
+    if (!e_who->m_bALifeControl)
+        return;
+
+    CSE_ALifeObject* alife_object = smart_cast<CSE_ALifeObject*>(e_who);
+    if (!alife_object)
+        return;
+
+    alife_object->m_bOnline = true;
+
+    if (alife_object->ID_Parent != 0xffff)
+    {
+        CSE_ALifeDynamicObject* parent = ai().alife().objects().object(alife_object->ID_Parent, true);
+        if (parent)
+        {
+            CSE_ALifeTraderAbstract* trader = smart_cast<CSE_ALifeTraderAbstract*>(parent);
+            if (trader)
+                alife().create(alife_object);
+            else
+            {
+                CSE_ALifeInventoryBox* const box = smart_cast<CSE_ALifeInventoryBox*>(parent);
+                if (box)
+                    alife().create(alife_object);
+                else
+                    alife_object->m_bALifeControl = false;
+            }
+        }
+        else
+            alife_object->m_bALifeControl = false;
+    }
+    else
+        alife().create(alife_object);
+};
+
+void game_sv_mp::OnPostCreate(u16 id_who) 
+{ 
+    inherited::OnPostCreate(id_who);
 };
 
 void game_sv_mp::ClearPlayerState(game_PlayerState* ps)

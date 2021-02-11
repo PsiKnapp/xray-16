@@ -169,6 +169,7 @@ u32 get_time_minutes()
 
 void change_game_time(u32 days, u32 hours, u32 mins)
 {
+    // PKTODO: Make this support multiplayer too
     game_sv_Single* tpGame = smart_cast<game_sv_Single*>(Level().Server->GetGameState());
     if (tpGame && ai().get_alife())
     {

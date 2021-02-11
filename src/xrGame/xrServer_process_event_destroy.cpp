@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "xrServer.h"
 #include "game_sv_single.h"
+#include "game_sv_mp.h"
 #include "alife_simulator.h"
 #include "xrServer_Objects.h"
 #include "game_base.h"
@@ -100,10 +101,22 @@ void xrServer::Process_event_destroy(NET_Packet& P, ClientID sender, u32 time, u
     // Everything OK, so perform entity-destroy
     if (e_dest->m_bALifeControl && ai().get_alife())
     {
+        // PKTODO: Make this work for multiplayer
+        //  - Need to make it cast the correct game type
+        // PKTODO: Temp hack, we should probably make all of the modes use the same AI controller
+        //  - At minimum, they should have the same interfaces, even if they work entirely differently
         game_sv_Single* _game = smart_cast<game_sv_Single*>(game);
-        VERIFY(_game);
+        CALifeSimulator* pGameALife = nullptr;
+
+        if (_game)
+            pGameALife = &_game->alife();
+        else if (game_sv_mp* _mp_game = smart_cast<game_sv_mp*>(game))
+            pGameALife = &_mp_game->alife();
+
+        VERIFY(pGameALife);
+
         if (ai().alife().objects().object(id_dest, true))
-            _game->alife().release(e_dest, false);
+            pGameALife->release(e_dest, false);
     }
 
     if (game)

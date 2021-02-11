@@ -294,6 +294,7 @@ void CEntityAlive::Hit(SHit* pHDS)
     //-------------------------------------------
     inherited::Hit(&HDS);
 
+    // PKTODO: Make players suffer by changing relation registry >:)
     if (g_Alive() && IsGameTypeSingle())
     {
         CEntityAlive* EA = smart_cast<CEntityAlive*>(HDS.who);

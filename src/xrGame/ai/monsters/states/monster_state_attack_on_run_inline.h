@@ -343,6 +343,7 @@ void ATTACK_ON_RUN_STATE::update_movement_target()
         float const attack2target_mag = 3;
 
         float self2target_mag = self2atack_mag + attack2target_mag;
+        // PKTODO: maybe make this a safe normalize.
         self2target = normalize(self2atack_point) * self2target_mag;
     }
     else
