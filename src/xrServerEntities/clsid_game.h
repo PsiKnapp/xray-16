@@ -212,12 +212,14 @@ constexpr CLASS_ID CLSID_DETECTOR_VISUAL = MK_CLSID('D','_','V','I','S','D','E',
 
 // Game types
 #define CLSID_SV_GAME_SINGLE MK_CLSID('S', 'V', '_', 'S', 'I', 'N', 'G', 'L')
+#define CLSID_SV_GAME_COOP MK_CLSID('S', 'V', '_', 'C', 'O', 'O', 'P', ' ')
 #define CLSID_SV_GAME_DEATHMATCH MK_CLSID('S', 'V', '_', 'D', 'M', ' ', ' ', ' ')
 #define CLSID_SV_GAME_TEAMDEATHMATCH MK_CLSID('S', 'V', '_', 'T', 'D', 'M', ' ', ' ')
 #define CLSID_SV_GAME_ARTEFACTHUNT MK_CLSID('S', 'V', '_', 'A', 'H', 'U', 'N', 'T')
 #define CLSID_SV_GAME_CAPTURETHEARTEFACT MK_CLSID('S', 'V', '_', 'C', 'T', 'A', ' ', ' ')
 //#define CLSID_GAME_CS				MK_CLSID('S','V','_','C','S',' ',' ',' ')
 #define CLSID_CL_GAME_SINGLE MK_CLSID('C', 'L', '_', 'S', 'I', 'N', 'G', 'L')
+#define CLSID_CL_GAME_COOP MK_CLSID('C', 'L', '_', 'C', 'O', 'O', 'P', ' ')
 #define CLSID_CL_GAME_DEATHMATCH MK_CLSID('C', 'L', '_', 'D', 'M', ' ', ' ', ' ')
 #define CLSID_CL_GAME_TEAMDEATHMATCH MK_CLSID('C', 'L', '_', 'T', 'D', 'M', ' ', ' ')
 #define CLSID_CL_GAME_ARTEFACTHUNT MK_CLSID('C', 'L', '_', 'A', 'H', 'U', 'N', 'T')
@@ -225,6 +227,7 @@ constexpr CLASS_ID CLSID_DETECTOR_VISUAL = MK_CLSID('D','_','V','I','S','D','E',
 
 // Game UI types
 #define CLSID_GAME_UI_SINGLE MK_CLSID('U', 'I', '_', 'S', 'I', 'N', 'G', 'L')
+#define CLSID_GAME_UI_COOP MK_CLSID('U', 'I', '_', 'C', 'O', 'O', 'P', ' ')
 #define CLSID_GAME_UI_DEATHMATCH MK_CLSID('U', 'I', '_', 'D', 'M', ' ', ' ', ' ')
 #define CLSID_GAME_UI_TEAMDEATHMATCH MK_CLSID('U', 'I', '_', 'T', 'D', 'M', ' ', ' ')
 #define CLSID_GAME_UI_ARTEFACTHUNT MK_CLSID('U', 'I', '_', 'A', 'H', 'U', 'N', 'T')

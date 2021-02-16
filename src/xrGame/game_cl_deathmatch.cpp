@@ -166,7 +166,7 @@ IBuyWnd* game_cl_Deathmatch::InitBuyMenu(const shared_str& BasePriceSection, s16
     if (Team == -1)
     {
         Team = local_player->team;
-    };
+    }
 
     cl_TeamStruct* pTeamSect = &TeamList[ModifyTeam(Team)];
 
@@ -180,7 +180,7 @@ CUISkinSelectorWnd* game_cl_Deathmatch::InitSkinMenu(s16 Team)
     if (Team == -1)
     {
         Team = local_player->team;
-    };
+    }
 
     cl_TeamStruct* pTeamSect = &TeamList[ModifyTeam(Team)];
 
@@ -916,6 +916,7 @@ void game_cl_Deathmatch::GetMapEntities(xr_vector<SZoneMapEntityData>& dst)
 
 bool game_cl_Deathmatch::IsEnemy(game_PlayerState* ps) { return true; }
 bool game_cl_Deathmatch::IsEnemy(CEntityAlive* ea1, CEntityAlive* ea2) { return true; };
+
 void game_cl_Deathmatch::OnRender()
 {
     game_PlayerState* lookat_player = Game().lookat_player();

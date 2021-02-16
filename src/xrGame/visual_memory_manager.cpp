@@ -687,6 +687,9 @@ void CVisualMemoryManager::update(float time_delta)
     START_PROFILE("Memory Manager/visuals/update/removing_offline")
     // verifying if object is online
     {
+        // PKBUG: Had a null object here after using g_spawn
+        //  - Can't tell where the bug is, object has m_object that seems to be invalid
+        //  - Happened in remove_if
         m_objects->erase(
             std::remove_if(m_objects->begin(), m_objects->end(), SRemoveOfflinePredicate()), m_objects->end());
     }

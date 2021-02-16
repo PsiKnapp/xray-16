@@ -50,7 +50,8 @@ IC void CSSafeMapIterator::remove(const _key_type& id, bool no_assert)
     _iterator I = m_objects.find(id);
     if (I == m_objects.end())
     {
-        // PKTODO: Crash here on player death most likely caused by player spawn not registered
+        // PKTODO: Crash here due to game objects that are spawned (g_spawn, or multiplayer items)
+        //   because they are not added to LevelRegistry
         THROW2(no_assert, "Specified object hasn't been found in the registry!");
         return;
     }

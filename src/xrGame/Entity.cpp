@@ -206,6 +206,7 @@ bool CEntity::net_Spawn(CSE_Abstract* DC)
     }
 
     // PKTODO: Validate change here is safe
+    //  - Spawning too fast can cause issues here
     if (g_Alive()) //&& IsGameTypeSingle())
     {
         m_registered_member = true;

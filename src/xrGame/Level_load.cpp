@@ -22,12 +22,12 @@ bool CLevel::Load_GameSpecific_Before()
     // PKTODO: Removed single player check
     /*if (GamePersistent().GameType() == eGameIDSingle && !ai().get_alife() && FS.exist(fn_game, "$level$", "level.ai") &&
         !net_Hosts.empty())*/
-    if (!ai().get_alife() && FS.exist(fn_game, "$level$", "level.ai") && !net_Hosts.empty())
-    {
-        // PKTODO: Alife HAS to be created here prior to loading, so this is weird.
-        //  - Not sure if this was ever legitimately hit in normal code execution.
-        ai().load(net_SessionName());
-    }
+    //if (!ai().get_alife() && FS.exist(fn_game, "$level$", "level.ai") && !net_Hosts.empty())
+    //{
+    //    // PKTODO: Alife HAS to be created here prior to loading, so this is weird.
+    //    //  - Not sure if this was ever legitimately hit in normal code execution.
+    //    ai().load(net_SessionName());
+    //}
 
     if (!GEnv.isDedicatedServer && !ai().get_alife() && ai().get_game_graph() && FS.exist(fn_game, "$level$", "level.game"))
     {

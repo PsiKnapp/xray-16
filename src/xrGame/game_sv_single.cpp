@@ -94,7 +94,9 @@ BOOL game_sv_Single::OnTouch(u16 eid_who, u16 eid_what, BOOL bForced)
         if (l_tpALifeInventoryItem && l_tpDynamicObject &&
             ai().alife().graph().level().object(l_tpALifeInventoryItem->base()->ID, true) &&
             ai().alife().objects().object(e_who->ID, true) && ai().alife().objects().object(e_what->ID, true))
+        {
             alife().graph().attach(*e_who, l_tpALifeInventoryItem, l_tpDynamicObject->m_tGraphID, false, false);
+        }
 #ifdef DEBUG
         else if (psAI_Flags.test(aiALife))
         {
@@ -126,7 +128,9 @@ void game_sv_Single::OnDetach(u16 eid_who, u16 eid_what)
         if (ai().alife().objects().object(e_who->ID, true) &&
             !ai().alife().graph().level().object(l_tpALifeInventoryItem->base()->ID, true) &&
             ai().alife().objects().object(e_what->ID, true))
+        {
             alife().graph().detach(*e_who, l_tpALifeInventoryItem, l_tpDynamicObject->m_tGraphID, false, false);
+        }
         else
         {
             if (!ai().alife().objects().object(e_what->ID, true))

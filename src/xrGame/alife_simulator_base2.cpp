@@ -63,8 +63,10 @@ void CALifeSimulatorBase::unregister_object(CSE_ALifeDynamicObject* object, bool
 
     CSE_ALifeInventoryItem* item = smart_cast<CSE_ALifeInventoryItem*>(object);
     if (item && item->attached())
+    {
         graph().detach(*objects().object(item->base()->ID_Parent), item,
             objects().object(item->base()->ID_Parent)->m_tGraphID, alife_query);
+    }
 
     objects().remove(object->ID);
     story_objects().remove(object->m_story_id);
@@ -79,7 +81,12 @@ void CALifeSimulatorBase::unregister_object(CSE_ALifeDynamicObject* object, bool
     else if (object->ID_Parent == 0xffff)
     {
         //			if (object->used_ai_locations())
-        graph().level().remove(object, !object->used_ai_locations());
+        // PKTODO: Checking valid GraphID here because spawned object don't have a GraphID and aren't added to 
+        //  the level objects so we don't need to remove them either
+        //  - We should double check that this doesn't cause any other crashes/issues
+        //      - If it does crash, either make spawned objects have the correct flags/fields or make a new flag for them instead
+            graph().level().remove(object, 
+                !object->used_ai_locations() || !ai().game_graph().valid_vertex_id(object->m_tGraphID));
     }
 }
 
